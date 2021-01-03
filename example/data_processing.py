@@ -39,6 +39,8 @@ df2['MONTH'] = pd.DatetimeIndex(df2['Local_Time']).month
 df2['DAY'] = pd.DatetimeIndex(df2['Local_Time']).day
 df2['HOUR'] = pd.DatetimeIndex(df2['Local_Time']).hour
 
+df1 = df2[['YEAR' , 'MONTH' , 'DAY' , 'HOUR','OPTPWR','IIT','IHT','kwh']]
+df1.to_csv('processed.csv' , index = False)
 df2.to_csv('./solar_data_202003_202007_processed.csv')
 print(df2)
 print(df2.isnull().sum())

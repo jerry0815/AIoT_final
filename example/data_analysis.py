@@ -7,11 +7,11 @@ from sklearn.metrics import r2_score, mean_squared_error
 from keras.layers import Dense
 from keras.models import Sequential
 
-df = pd.read_csv('./solar_data_202003_202007_processed.csv')
+df = pd.read_csv('final.csv')
 df = df[df['kwh']<30]
 
 
-X = df[['HOUR','OPTPWR','IIT','IHT']]
+X = df[['HOUR','OPTPWR','IIT','IHT','SUN']]
 Y = df[['kwh']]
 min_max_scaler_X = MinMaxScaler()
 min_max_scaler_Y = MinMaxScaler()
@@ -23,7 +23,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 model = Sequential()
-model.add(Dense(512, input_dim=4, activation='relu'))
+model.add(Dense(512, input_dim=5, activation='relu'))
 model.add(Dense(256, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 print(model.summary())
@@ -43,7 +43,7 @@ r2 = r2_score(y_test, y_test_pred)
 mse = mean_squared_error(y_test, y_test_pred)
 print('MSE: %.3f, R^2: %.3f' % (mse, r2))
 
-test = [[9, 15.8, 36, 41], [10, 7.55, 46, 41]]
+test = [[9, 15.8, 36, 41,0.5], [10, 7.55, 46, 41,0.5]]
 t_test = min_max_scaler_X.transform(np.array(test))
 pre = model.predict(t_test)
 print(min_max_scaler_Y.inverse_transform(pre))
